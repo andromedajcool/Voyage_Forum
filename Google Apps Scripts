@@ -1,0 +1,517 @@
+// Go to Google Apps Script
+// Click New project.
+// Delete the starter code.
+// Paste the code below.
+// Click Run and select createVoyageWorldCreator.
+// Give Google permission to create the document.
+
+
+function createVoyageWorldCreator() {
+
+  const doc = DocumentApp.create("🌎 Voyage World Creator — World Design Form");
+  const body = doc.getBody();
+
+  // ============================================================
+  // BASIC FORMATTING
+  // ============================================================
+
+  body.setMarginTop(54);
+  body.setMarginBottom(54);
+  body.setMarginLeft(54);
+  body.setMarginRight(54);
+
+  function title(text) {
+    const p = body.appendParagraph(text);
+    p.setHeading(DocumentApp.ParagraphHeading.TITLE);
+    p.setBold(true);
+    return p;
+  }
+
+  function subtitle(text) {
+    const p = body.appendParagraph(text);
+    p.setItalic(true);
+    return p;
+  }
+
+  function section(number, name) {
+    body.appendHorizontalRule();
+
+    const p = body.appendParagraph(number + ". " + name);
+    p.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+    p.setBold(true);
+
+    return p;
+  }
+
+  function question(text) {
+    const p = body.appendParagraph(text);
+    p.setHeading(DocumentApp.ParagraphHeading.HEADING2);
+    return p;
+  }
+
+  function checkbox(text) {
+    const p = body.appendParagraph("☐ " + text);
+    p.setSpacingAfter(2);
+    return p;
+  }
+
+  function answer(lines = 2) {
+
+    for (let i = 0; i < lines; i++) {
+      const p = body.appendParagraph(
+        "____________________________________________________________________________"
+      );
+
+      p.setForegroundColor("#999999");
+    }
+
+    body.appendParagraph("");
+  }
+
+  function checkboxAnswer(options) {
+
+    options.forEach(function(option) {
+      checkbox(option);
+    });
+
+    body.appendParagraph("");
+  }
+
+  function shortQuestion(text) {
+    question(text);
+    answer(1);
+  }
+
+  function longQuestion(text) {
+    question(text);
+    answer(3);
+  }
+
+  // ============================================================
+  // TITLE
+  // ============================================================
+
+  title("🌎 Voyage World Creator");
+
+  subtitle(
+    "A world-building questionnaire for designing a complete Voyage / AI Dungeon world."
+  );
+
+  body.appendParagraph("");
+
+  const intro = body.appendParagraph(
+    "HOW TO USE THIS FORM"
+  );
+  intro.setBold(true);
+
+  body.appendParagraph(
+    "Fill out as much or as little as you know. You do not need to have every detail figured out before creating your world. The purpose of this form is to give the World Builder enough information to understand what kind of experience you want."
+  );
+
+  body.appendParagraph(
+    "If something does not apply to your world, write N/A. If you are unsure, write 'AI decide' and let the World Builder make an appropriate choice."
+  );
+
+  body.appendParagraph("");
+
+  // ============================================================
+  // 1. WORLD BASICS
+  // ============================================================
+
+  section("1", "World Basics");
+
+  shortQuestion("World Title");
+  shortQuestion("Genre");
+  shortQuestion("Historical, Modern, Futuristic, Fantasy, or Other Setting");
+  longQuestion("What is the core premise of this world?");
+  longQuestion("What can the player primarily do in this world?");
+
+  question("Primary Activities");
+  checkboxAnswer([
+    "Explore",
+    "Travel",
+    "Fight",
+    "Survive",
+    "Trade",
+    "Work",
+    "Build",
+    "Investigate",
+    "Socialize",
+    "Roleplay",
+    "Solve puzzles",
+    "Complete quests",
+    "Manage resources",
+    "Other"
+  ]);
+
+  longQuestion("Anything else that defines what players will actually do?");
+
+  // ============================================================
+  // 2. WORLD FEEL
+  // ============================================================
+
+  section("2", "World Feel");
+
+  question("Overall Tone");
+  checkboxAnswer([
+    "Serious",
+    "Dark",
+    "Gritty",
+    "Realistic",
+    "Historical",
+    "Lighthearted",
+    "Comedic",
+    "Whimsical",
+    "Adventurous",
+    "Mysterious",
+    "Horror",
+    "Hopeful",
+    "Other"
+  ]);
+
+  question("Pacing");
+  checkboxAnswer([
+    "Slow and immersive",
+    "Relaxed",
+    "Moderate",
+    "Fast-paced",
+    "Constant action",
+    "Variable depending on situation"
+  ]);
+
+  question("Realism");
+  checkboxAnswer([
+    "Highly realistic",
+    "Mostly realistic",
+    "Realistic with some simplification",
+    "Cinematic",
+    "Fantasy/game logic",
+    "Other"
+  ]);
+
+  longQuestion("What should the world feel like to actually live in?");
+
+  // ============================================================
+  // 3. WORLD RULES
+  // ============================================================
+
+  section("3", "World Rules");
+
+  longQuestion("What is possible in this world?");
+  longQuestion("What is impossible in this world?");
+  longQuestion("What technology exists?");
+  longQuestion("What technology does NOT exist?");
+
+  question("Magic / Supernatural Elements");
+  checkboxAnswer([
+    "None",
+    "Completely impossible",
+    "Possible but extremely rare",
+    "Known and accepted",
+    "Common",
+    "Hidden / secret",
+    "Other"
+  ]);
+
+  longQuestion("Describe the magic, supernatural, or unusual elements.");
+
+  longQuestion("Important social rules");
+  longQuestion("Important legal rules");
+  longQuestion("Important economic rules");
+  longQuestion("Important physical/world rules");
+  longQuestion("Important cultural rules");
+
+  longQuestion("Are there exceptions to any of these rules?");
+
+  // ============================================================
+  // 4. NPC DESIGN
+  // ============================================================
+
+  section("4", "NPC Design");
+
+  question("How autonomous should NPCs be?");
+  checkboxAnswer([
+    "Mostly reactive to the player",
+    "Somewhat independent",
+    "Highly independent",
+    "Fully autonomous characters with their own lives"
+  ]);
+
+  question("NPC Behavior");
+  checkboxAnswer([
+    "NPCs may disagree with the player",
+    "NPCs may refuse requests",
+    "NPCs may lie",
+    "NPCs may misunderstand things",
+    "NPCs may be wrong",
+    "NPCs may leave the player",
+    "NPCs may have secrets",
+    "NPCs may change their opinions",
+    "NPCs may pursue independent goals",
+    "NPCs may interact without the player",
+    "NPCs remember previous events"
+  ]);
+
+  longQuestion("What should NPCs do when they disagree with the player?");
+  longQuestion("What independent goals might NPCs have?");
+  longQuestion("How should NPC memory work?");
+  longQuestion("How should NPCs handle secrets and hidden information?");
+  longQuestion("What makes NPCs interesting in this world?");
+  longQuestion("What NPC stereotypes should be avoided?");
+
+  // ============================================================
+  // 5. GEOGRAPHY & WORLD SIZE
+  // ============================================================
+
+  section("5", "Geography & World Size");
+
+  question("World Scale");
+  checkboxAnswer([
+    "Single building",
+    "Small settlement",
+    "Town",
+    "City",
+    "Region",
+    "Country",
+    "Multiple countries",
+    "Entire world",
+    "Other"
+  ]);
+
+  longQuestion("Describe the overall geography.");
+
+  longQuestion("What is the starting location?");
+  longQuestion("What regions exist?");
+  longQuestion("What are the most important locations?");
+  longQuestion("What locations should players eventually discover?");
+
+  question("Travel Style");
+  checkboxAnswer([
+    "Instant / abstract",
+    "Simple travel",
+    "Detailed travel",
+    "Travel is a major gameplay feature",
+    "Travel can involve encounters",
+    "Travel can involve survival/resource management"
+  ]);
+
+  longQuestion("How should travel work?");
+
+  shortQuestion("Calendar / Time Period");
+  longQuestion("How does time pass?");
+  longQuestion("Are there important dates, seasons, holidays, or historical events?");
+
+  // ============================================================
+  // 6. GAMEPLAY SYSTEMS
+  // ============================================================
+
+  section("6", "Gameplay Systems");
+
+  body.appendParagraph(
+    "For each system, select None, Simple, or Detailed. Then explain anything important about how it should work."
+  );
+
+  question("Health");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Health system notes");
+
+  question("Combat");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Combat system notes");
+
+  question("Money / Economy");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Money / economy notes");
+
+  question("Inventory");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Inventory notes");
+
+  question("Skills");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Skills notes");
+
+  question("Relationships");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Relationship notes");
+
+  question("Reputation");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Reputation notes");
+
+  question("Survival");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Survival notes");
+
+  question("Quests");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Quest notes");
+
+  question("Travel");
+  checkboxAnswer(["☐ None", "☐ Simple", "☐ Detailed"]);
+  longQuestion("Travel system notes");
+
+  longQuestion("Other gameplay systems");
+
+  // ============================================================
+  // 7. PLAYER EXPERIENCE
+  // ============================================================
+
+  section("7", "Player Experience");
+
+  question("What kind of role does the player have?");
+  checkboxAnswer([
+    "Ordinary person",
+    "Adventurer",
+    "Worker",
+    "Soldier",
+    "Criminal",
+    "Law enforcement",
+    "Noble / wealthy person",
+    "Leader",
+    "Explorer",
+    "Outsider",
+    "Player chooses their own role",
+    "Other"
+  ]);
+
+  question("How much freedom should the player have?");
+  checkboxAnswer([
+    "Highly guided",
+    "Some freedom",
+    "Very open",
+    "Sandbox",
+    "Almost completely player-directed"
+  ]);
+
+  longQuestion("Can the player simply live in the world without following a main story?");
+  longQuestion("What should the player feel while playing?");
+  longQuestion("How much can the player gain wealth, power, status, or influence?");
+  longQuestion("Should failure have permanent consequences?");
+  longQuestion("Is permanent death possible?");
+
+  // ============================================================
+  // 8. TONE & WRITING STYLE
+  // ============================================================
+
+  section("8", "Tone & Writing Style");
+
+  longQuestion("Overall writing tone");
+  longQuestion("Narrative style");
+  longQuestion("How descriptive should narration be?");
+  longQuestion("How should dialogue be written?");
+
+  question("Violence");
+  checkboxAnswer([
+    "Minimal",
+    "Moderate",
+    "Graphic",
+    "Realistic",
+    "Cinematic",
+    "Depends on situation"
+  ]);
+
+  question("Humor");
+  checkboxAnswer([
+    "None",
+    "Rare",
+    "Occasional",
+    "Frequent",
+    "Very comedic",
+    "Depends on situation"
+  ]);
+
+  question("Romance");
+  checkboxAnswer([
+    "None",
+    "Background only",
+    "Possible",
+    "Important",
+    "Player-directed"
+  ]);
+
+  longQuestion("How should dark or disturbing themes be handled?");
+  longQuestion("Are there topics that require special care?");
+  longQuestion("Are there topics the world should NEVER introduce on its own?");
+
+  // ============================================================
+  // 9. SPECIAL MECHANICS
+  // ============================================================
+
+  section("9", "Special Mechanics");
+
+  longQuestion("Are there any unusual or unique mechanics?");
+  longQuestion("What triggers these mechanics?");
+  longQuestion("What effects do they produce?");
+  longQuestion("What should NOT trigger them?");
+  longQuestion("What happens if the player fails?");
+
+  // ============================================================
+  // 10. STORY DIRECTION
+  // ============================================================
+
+  section("10", "Story Direction");
+
+  longQuestion("What kinds of stories should the world naturally encourage?");
+  longQuestion("What kinds of stories should the world NOT force?");
+  longQuestion("How frequently should new problems or events appear?");
+  longQuestion("Should the world continue changing when the player does nothing?");
+  longQuestion("What should happen when the player ignores an important event?");
+
+  // ============================================================
+  // 11. AUTHOR'S VISION
+  // ============================================================
+
+  section("11", "Author's Vision");
+
+  longQuestion("What MUST be present in this world?");
+  longQuestion("What MUST NOT happen?");
+  longQuestion("What experience are you specifically trying to create?");
+  longQuestion("What would make you say: 'YES, exactly what I wanted?'");
+  longQuestion("Anything else the World Builder absolutely needs to know?");
+
+  // ============================================================
+  // 12. OPTIONAL BIG IDEA
+  // ============================================================
+
+  section("12", "Optional Big Idea");
+
+  longQuestion(
+    "If you could explain this entire world in one paragraph, what would you say?"
+  );
+
+  // ============================================================
+  // FINAL NOTES
+  // ============================================================
+
+  body.appendHorizontalRule();
+
+  const finalHeading = body.appendParagraph("FINAL NOTES");
+  finalHeading.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+
+  body.appendParagraph(
+    "Use this space for anything that did not fit elsewhere."
+  );
+
+  answer(6);
+
+  body.appendParagraph("");
+
+  const end = body.appendParagraph(
+    "END OF WORLD CREATOR FORM"
+  );
+
+  end.setBold(true);
+  end.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+
+  // ============================================================
+  // SAVE
+  // ============================================================
+
+  doc.saveAndClose();
+
+  Logger.log("Your Voyage World Creator was created:");
+  Logger.log(doc.getUrl());
+
+  return doc.getUrl();
+}
